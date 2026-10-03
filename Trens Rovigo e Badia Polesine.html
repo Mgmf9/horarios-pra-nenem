@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trens Rovigo e Badia Polesine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9eef4;--card:#fff;--ink:#0e2a47;--muted:#5d7188;--line:#d5dee8;--sign:#0e2a47;--signink:#fff;--yellow:#ffc20e;--ok:#1b7a4b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#08121e;--card:#11243a;--ink:#e8f0f8;--muted:#8fa4ba;--line:#1f3550;--sign:#050d17;--signink:#fff}}
+:root[data-theme="dark"]{--bg:#08121e;--card:#11243a;--ink:#e8f0f8;--muted:#8fa4ba;--line:#1f3550;--sign:#050d17;--signink:#fff}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 16px/1.45 Barlow,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:560px;margin:0 auto;padding:18px 16px 40px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px}
+h1{font:700 26px/1.05 "Barlow Condensed",Barlow,sans-serif;margin:0;letter-spacing:.2px}
+.clock{text-align:right;font-size:13px;color:var(--muted);line-height:1.25}
+.clock b{display:block;font:600 24px/1 "Barlow Condensed",Barlow,sans-serif;color:var(--ink);font-variant-numeric:tabular-nums}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:14px}
+.seg button{font:600 15px/1.2 Barlow,sans-serif;color:var(--muted);background:none;border:0;border-radius:10px;padding:11px 8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--sign);color:var(--signink)}
+button:focus-visible,a:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.sign{background:var(--sign);color:var(--signink);border-radius:18px;padding:18px 18px 0;overflow:hidden;margin-bottom:18px}
+.sign small{font-size:14px;opacity:.78}
+.sign .big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:2px 0 14px}
+.sign .t{font:700 76px/.95 "Barlow Condensed",Barlow,sans-serif;color:var(--yellow);font-variant-numeric:tabular-nums}
+.sign .arr{font:500 20px/1.2 "Barlow Condensed",Barlow,sans-serif;opacity:.9}
+.sign .meta{font-size:14px;opacity:.85;margin-bottom:14px}
+.line{margin:0 -18px;background:repeating-linear-gradient(90deg,var(--yellow) 0 22px,#0000 22px 30px);height:6px}
+.cd{display:flex;align-items:center;gap:8px;padding:11px 0 12px;font-weight:600;color:var(--yellow)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--yellow);animation:p 1.6s ease-in-out infinite}
+@keyframes p{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 8px}
+h2{font:600 20px/1.2 "Barlow Condensed",Barlow,sans-serif;margin:0}
+.chip{font-size:13px;font-weight:600;background:var(--yellow);color:#0e2a47;border-radius:99px;padding:2px 10px;margin-left:6px;vertical-align:2px}
+.all{font:600 14px/1 Barlow,sans-serif;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:9px 14px;cursor:pointer}
+ul{list-style:none;margin:0 0 20px;padding:0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.row{display:grid;grid-template-columns:78px 1fr auto;align-items:center;gap:8px;padding:11px 14px 11px 12px;border-bottom:1px solid var(--line);border-left:5px solid transparent}
+.row:last-child{border-bottom:0}
+.row .d{font:700 28px/1 "Barlow Condensed",Barlow,sans-serif;font-variant-numeric:tabular-nums}
+.row .a{color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums}
+.row .n{font-size:13px;color:var(--muted)}
+.row.past{opacity:.42}
+.row.next{border-left-color:var(--yellow);background:color-mix(in srgb,var(--yellow) 14%,var(--card))}
+.row.next .n{color:var(--ink);font-weight:600}
+.empty{padding:18px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);line-height:1.5}
+.note a{color:var(--ink);font-weight:600}
+.warn{background:color-mix(in srgb,var(--yellow) 25%,var(--card));border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:14px}
+sup{font-size:12px}
+.side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.lang{display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:2px}
+.lang button{font:600 12px/1 Barlow,sans-serif;border:0;background:none;color:var(--muted);padding:7px 11px;border-radius:99px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--sign);color:var(--signink)}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Rovigo e<br>Badia Polesine</h1>
+    <div class="side"><div class="clock"><b id="clk">--:--</b><span id="dt"></span></div><div class="lang" role="group" aria-label="Idioma / Lingua"><button data-lang="pt">PT</button><button data-lang="it">IT</button></div></div>
+  </header>
+  <div class="seg" role="group" aria-label="Sentido da viagem">
+    <button data-dir="ida" aria-pressed="true">Rovigo → Badia</button>
+    <button data-dir="volta" aria-pressed="false">Badia → Rovigo</button>
+  </div>
+  <div id="warn"></div>
+  <section class="sign" id="hero" aria-live="polite"></section>
+  <div class="bar"><h2 id="ttl"></h2><button class="all" id="all" aria-pressed="false"></button></div>
+  <div id="list"></div>
+  <p class="note" id="foot"></p>
+</main>
+<script>
+const HOL=["2026-11-01","2026-12-08"], END="2026-12-12";
+// [saída, chegada, trem, dias (W seg–sex, S sábado, H domingo/feriado), dias a confirmar]
+const D={
+ida:{from:"Rovigo",to:"Badia Polesine",rfi:"https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?placeId=2445&arrivals=False",t:[
+["05:02","05:23","91532","WS"],["05:36","06:02","91500","WS"],["06:02","06:23","91534","H"],["06:36","07:06","91502","W"],
+["07:36","08:06","91504","WS"],["08:36","09:06","91506","H"],["09:36","10:06","91508","W"],["11:36","12:06","91510","H"],
+["12:36","13:06","91512","WS"],["13:36","14:06","91514","WSH"],["14:36","15:06","91516","W"],["15:36","16:06","91518","WSH"],
+["16:36","17:06","91520","W"],["17:36","18:06","91522","WSH"],["18:36","19:06","91524","W"],["19:36","20:06","91526","WS"],["19:36","20:06","91528","H"]]},
+volta:{from:"Badia Polesine",to:"Rovigo",rfi:"https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?placeId=565&arrivals=False",t:[
+["06:47","07:24","91503","WS"],["07:47","08:24","91505","WS"],["08:47","09:24","91507","WH"],["10:08","10:38","91509","WS"],
+["12:47","13:24","91511","WH"],["13:47","14:24","91513","WS","W"],["14:47","15:24","91515","WSH"],["15:47","16:24","91517","W"],
+["16:47","17:24","91519","WSH"],["17:47","18:24","91521","W"],["18:47","19:24","91523","WSH"],["19:47","20:24","91525","W"],
+["20:51","21:24","91527","WSH"],["21:50","22:12","91529","W"],["22:45","23:06","91531","H"]]}
+};
+const L={
+pt:{loc:"pt-BR",title:"Trens Rovigo e Badia Polesine",dirs:"Sentido da viagem",W:"Segunda a sexta",S:"Sábado",H:"Domingo e feriados",tz:"hora da Itália",
+warn:"A grade de dezembro pode ter mudado. Confira na RFI antes de viajar.",first:"Primeiro trem de ",over:"Acabaram os trens de hoje",nextT:"Próximo trem",
+now:"Saindo agora",inMin:m=>"Sai em "+m+" min",inH:(h,m)=>"Sai em "+h+"h"+m,arrive:"chega às",arr:"chega",trip:"min de viagem",reg:"Regional",nxt:"próximo",
+hol:"feriado",today:"hoje",Today:"Hoje",all:"Todos os dias",only:"Ver só hoje",see:"Ver todos os dias",
+foot:"Horários da grade válida de 13/09 a 12/12/2026, conferidos na RFI em 03/10. Feriados contam como domingo. Greves e obras podem mudar a circulação.",
+live:"Ver partidas ao vivo na RFI",star:"* O 13:47 de segunda a sexta ainda não foi confirmado; o de sábado foi."},
+it:{loc:"it-IT",title:"Treni Rovigo e Badia Polesine",dirs:"Direzione del viaggio",W:"Lunedì–venerdì",S:"Sabato",H:"Domenica e festivi",tz:"ora locale",
+warn:"L'orario di dicembre potrebbe essere cambiato. Controlla su RFI prima di partire.",first:"Primo treno di ",over:"Per oggi i treni sono finiti",nextT:"Prossimo treno",
+now:"In partenza ora",inMin:m=>"Parte tra "+m+" min",inH:(h,m)=>"Parte tra "+h+"h"+m,arrive:"arriva alle",arr:"arriva",trip:"min di viaggio",reg:"Regionale",nxt:"prossimo",
+hol:"festivo",today:"oggi",Today:"Oggi",all:"Tutti i giorni",only:"Solo oggi",see:"Vedi tutti i giorni",
+foot:"Orari validi dal 13/09 al 12/12/2026, verificati su RFI il 03/10. I festivi valgono come domenica. Scioperi e lavori possono modificare la circolazione.",
+live:"Vedi le partenze in tempo reale su RFI",star:"* Il 13:47 da lunedì a venerdì non è ancora confermato; quello del sabato sì."}
+};
+let lang="pt";
+try{lang=localStorage.getItem("lang")||""}catch(e){}
+if(!L[lang])lang=(navigator.language||"").toLowerCase().startsWith("it")?"it":"pt";
+const T=k=>L[lang][k];
+const st={dir:"ida",all:false};
+const $=id=>document.getElementById(id);
+const mm=s=>{const[a,b]=s.split(":");return +a*60+ +b};
+const cal=y=>new Date(y+"T12:00:00Z");
+const add=(y,n)=>{const d=cal(y);d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const type=y=>{const w=cal(y).getUTCDay();return HOL.includes(y)||w===0?"H":w===6?"S":"W"};
+const lbl=y=>new Intl.DateTimeFormat(T("loc"),{weekday:"long",day:"numeric",month:"long",timeZone:"UTC"}).format(cal(y));
+const wd=y=>new Intl.DateTimeFormat(T("loc"),{weekday:"long",timeZone:"UTC"}).format(cal(y));
+function rome(){
+  const p=Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Rome",hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+  return{ymd:`${p.year}-${p.month}-${p.day}`,min:+p.hour*60+ +p.minute,hm:`${p.hour}:${p.minute}`};
+}
+function nextTrain(now){
+  for(let i=0;i<3;i++){
+    const y=add(now.ymd,i),ty=type(y);
+    const f=D[st.dir].t.find(t=>t[3].includes(ty)&&(i>0||mm(t[0])>=now.min));
+    if(f)return{t:f,i,y,ty};
+  }
+}
+const q=(t,ty)=>t[4]&&t[4].includes(ty)?"<sup>*</sup>":"";
+function row(t,ty,now,today,nx){
+  const past=today&&mm(t[0])<now.min, isN=today&&nx&&nx.i===0&&nx.t===t;
+  return `<li class="row${past?" past":""}${isN?" next":""}"><span class="d">${t[0]}</span><span class="a">${T("arr")} ${t[1]}</span><span class="n">${isN?T("nxt")+" · ":""}${t[2]}${q(t,ty)}</span></li>`;
+}
+function render(){
+  const now=rome(),d=D[st.dir],ty=type(now.ymd),nx=nextTrain(now);
+  document.documentElement.lang=lang==="it"?"it":"pt-BR";document.title=T("title");
+  document.querySelector(".seg").setAttribute("aria-label",T("dirs"));
+  $("clk").textContent=now.hm;
+  $("dt").textContent=T("tz")+", "+lbl(now.ymd);
+  $("warn").innerHTML=now.ymd>END?`<div class="warn">${T("warn")}</div>`:"";
+  if(nx){
+    const wait=mm(nx.t[0])-now.min+nx.i*1440;
+    const cd=nx.i>0?T("first")+wd(nx.y):wait<=0?T("now"):wait<60?T("inMin")(wait):T("inH")(Math.floor(wait/60),String(wait%60).padStart(2,"0"));
+    $("hero").innerHTML=`<small>${nx.i>0?T("over"):T("nextT")} · ${d.from} → ${d.to}</small>
+    <div class="big"><span class="t">${nx.t[0]}</span><span class="arr">${T("arrive")} ${nx.t[1]}</span></div>
+    <div class="meta">${T("reg")} ${nx.t[2]}${q(nx.t,nx.ty)} · ${mm(nx.t[1])-mm(nx.t[0])} ${T("trip")}</div>
+    <div class="line"></div><div class="cd"><span class="dot"></span>${cd}</div>`;
+  }
+  $("ttl").innerHTML=st.all?T("all"):`${T("Today")}<span class="chip">${HOL.includes(now.ymd)?T("hol"):T(ty).toLowerCase()}</span>`;
+  $("all").textContent=st.all?T("only"):T("see");
+  $("all").setAttribute("aria-pressed",st.all);
+  let html="";
+  if(!st.all){
+    html=`<ul>${d.t.filter(t=>t[3].includes(ty)).map(t=>row(t,ty,now,true,nx)).join("")}</ul>`;
+  }else{
+    html=["W","S","H"].map(k=>`<h2 style="margin:4px 0 8px">${T(k)}${k===ty?`<span class="chip">${T("today")}</span>`:""}</h2><ul>${d.t.filter(t=>t[3].includes(k)).map(t=>row(t,k,now,k===ty,nx)).join("")}</ul>`).join("");
+  }
+  $("list").innerHTML=html;
+  $("foot").innerHTML=`${T("foot")}<br><a href="${d.rfi}" target="_blank" rel="noopener">${T("live")}</a>${st.dir==="volta"?"<br>"+T("star"):""}`;
+  document.querySelectorAll("[data-dir]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dir===st.dir));
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===lang));
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-dir]");if(b){st.dir=b.dataset.dir;render();}
+  const g=e.target.closest("[data-lang]");if(g){lang=g.dataset.lang;try{localStorage.setItem("lang",lang)}catch(x){}render();}
+  if(e.target.id==="all"){st.all=!st.all;render();}
+});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)render()});
+render();setInterval(render,20000);
+</script>
+</body>
+</html>
